@@ -1,0 +1,28 @@
+name: Testes
+on: [push, pull_request]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: agenda_test
+          POSTGRES_USER: agenda
+          POSTGRES_PASSWORD: agenda_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U agenda -d agenda_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - run: mvn -B verify
+        env:
+          TEST_DB_URL: jdbc:postgresql://localhost:5432/agenda_test
+          TEST_DB_USER: agenda
+          TEST_DB_PASSWORD: agenda_test

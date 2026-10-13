@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: ${TEST_DB_URL:jdbc:h2:mem:agenda;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;LOCK_TIMEOUT=10000}
+    username: ${TEST_DB_USER:sa}
+    password: ${TEST_DB_PASSWORD:}
+app:
+  jwt:
+    secret: chave-exclusiva-dos-testes-com-mais-de-32-bytes
+    expiration: 3600

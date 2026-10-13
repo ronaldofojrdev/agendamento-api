@@ -1,0 +1,83 @@
+@baseUrl = http://localhost:8080
+@token = COLE-O-TOKEN-AQUI
+@servicoId = COLE-O-ID-DO-SERVICO
+@profissionalId = COLE-O-ID-DO-PROFISSIONAL
+@clienteId = COLE-O-ID-DO-CLIENTE
+@agendamentoId = COLE-O-ID-DO-AGENDAMENTO
+
+### Criar empresa
+POST {{baseUrl}}/api/empresas
+Content-Type: application/json
+
+{
+  "nome": "Barbearia Centro",
+  "slug": "barbearia-centro",
+  "adminNome": "Rafael",
+  "adminEmail": "rafael@exemplo.com",
+  "adminSenha": "SenhaLocal123"
+}
+
+### Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "empresaSlug": "barbearia-centro",
+  "email": "rafael@exemplo.com",
+  "senha": "SenhaLocal123"
+}
+
+### Cadastrar profissional
+POST {{baseUrl}}/api/usuarios
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Lucas",
+  "email": "lucas@exemplo.com",
+  "senha": "SenhaLocal123",
+  "papel": "PROFISSIONAL"
+}
+
+### Cadastrar cliente
+POST {{baseUrl}}/api/usuarios
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Maria",
+  "email": "maria@exemplo.com",
+  "senha": "SenhaLocal123",
+  "papel": "CLIENTE"
+}
+
+### Criar serviço
+POST {{baseUrl}}/api/servicos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Corte",
+  "duracaoMinutos": 30,
+  "preco": 45.00
+}
+
+### Agendar com token de admin
+POST {{baseUrl}}/api/agendamentos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "servicoId": "{{servicoId}}",
+  "profissionalId": "{{profissionalId}}",
+  "clienteId": "{{clienteId}}",
+  "inicio": "2030-06-10T14:00:00-03:00"
+}
+
+### Consultar agenda
+GET {{baseUrl}}/api/agendamentos?de=2030-06-10T00:00:00-03:00&ate=2030-06-11T00:00:00-03:00
+Authorization: Bearer {{token}}
+
+### Cancelar
+PATCH {{baseUrl}}/api/agendamentos/{{agendamentoId}}/cancelar
+Authorization: Bearer {{token}}
